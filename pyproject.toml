@@ -10,6 +10,7 @@ ipykernel = "^6.13.0"
 pandas = "^1.4.2"
 openpyxl = "^3.0.9"
 nltk = "^3.7"
+wordcloud = "^1.8.1"
 
 [tool.poetry.dev-dependencies]
 
