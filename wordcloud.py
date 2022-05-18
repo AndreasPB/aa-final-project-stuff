@@ -4,7 +4,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
 # %%
-df = pd.read_excel("magazine_reviews_cleanup.xlsx")
+df = pd.read_csv("magazine_reviews_cleanup.tsv", sep="\t")
 
 # %%
 df
