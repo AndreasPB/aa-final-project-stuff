@@ -1,5 +1,8 @@
 # %%
-# Import stuff
+import pandas as pd
 
 # %%
-# Do stuff
+df = pd.read_csv("magazine_reviews_cleanup.tsv", sep="\t")
+
+# %%
+df.head()
