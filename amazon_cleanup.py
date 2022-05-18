@@ -1,6 +1,7 @@
 # %%
 import pandas as pd
 import nltk 
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.tokenize import ToktokTokenizer
 import json
@@ -55,4 +56,5 @@ df["reviewText"] = df["reviewText"].str.replace('[^\w\s]',"")
 # - lemmatization
 
 df.to_excel("magazine_reviews_cleanup.xlsx", index=False)
+
 
