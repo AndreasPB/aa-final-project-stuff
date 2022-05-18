@@ -55,6 +55,4 @@ df["reviewText"] = df["reviewText"].str.replace('[^\w\s]',"")
 # - stemming
 # - lemmatization
 
-df.to_excel("magazine_reviews_cleanup.xlsx", index=False)
-
-
+df.to_csv("magazine_reviews_cleanup.tsv", index=False, sep="\t")
