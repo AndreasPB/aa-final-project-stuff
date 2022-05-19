@@ -12,6 +12,7 @@ openpyxl = "^3.0.9"
 nltk = "^3.7"
 wordcloud = "^1.8.1"
 matplotlib = "^3.5.2"
+numpy = "^1.22.3"
 
 [tool.poetry.dev-dependencies]
 
