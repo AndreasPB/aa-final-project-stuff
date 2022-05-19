@@ -4,19 +4,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # %%
-df = pd.read_csv("magazine_reviews_cleanup.tsv", sep='\t')
+df = pd.read_csv("magazine_reviews_cleanup.tsv", sep="\t")
 df
 
 # %%
-bins = list(range(0, 50+25, 10))
-df["vote"].value_counts(bins=bins).plot(figsize=(9, 3),kind="bar", rot=0)
+bins = list(range(0, 50 + 25, 10))
+df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
 
 # %%
-bins = list(range(1, 50+25, 10))
-df["vote"].value_counts(bins=bins).plot(figsize=(9, 3),kind="bar", rot=0)
+bins = list(range(1, 50 + 25, 10))
+df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
@@ -27,55 +27,47 @@ has_votes = votes[1:].sum()
 plt.bar(["No votes", "Votes"], [no_votes, has_votes])
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
-
 plt.legend(["Review votes"])
 # %%
-# for loops?
-bins = list(range(1, 50+25, 10))
-df["vote"].value_counts(bins=bins)
-print("I AM HERE ISAJDIOASJDIOAJIODJIAOJDIOAJOID")
+bins = list(range(1, 50 + 25, 10))  # [1, 11, 21, 31, 41, 51, 61, 71]
+
+
+def split_by_ratings(data: pd.DataFrame) -> list[list]:
+    split_data = []
+    for rating in range(5, 0, -1):
+        single_rating_votes = df.loc[df.rating == rating]["vote"]
+        binned = single_rating_votes.value_counts(bins=bins)
+        split_data.append(binned.to_list())
+    return split_data
+
+
+split_by_ratings(df)
 # %%
-#data = df["vote"].value_counts(bins=bins)
-five_star_reviews = df.loc[df.rating == 5]
-print(type(five_star_reviews))
-four_star_reviews = df.loc[df.rating == 4]
-three_star_reviews = df.loc[df.rating == 3]
-two_star_reviews = df.loc[df.rating == 2]
-one_star_reviews = df.loc[df.rating == 1]
-five = five_star_reviews["vote"].value_counts(bins=bins)
-four = four_star_reviews["vote"].value_counts(bins=bins)
-three = three_star_reviews["vote"].value_counts(bins=bins)
-two = two_star_reviews["vote"].value_counts(bins=bins)
-one = one_star_reviews["vote"].value_counts(bins=bins)
+heatmap = np.array(split_by_ratings(df))
 
-print("THIS IS NOT FUNNNNY: ", one.to_list())
+bin_labels = [
+    "[1:11]",
+    "[11:21]",
+    "[21:31]",
+    "[31:41]",
+    "[41:51]",
+    "[51:61]",
+    "[61:71]",
+]
+rating_labels = range(5, 0, -1)
 
-mogens = np.array([five.to_list(),
-                   four.to_list(),
-                   three.to_list(),
-                   two.to_list(),
-                   one.to_list()])
-
-print(mogens)
-
-graeder = ["[1:11]", "[11:21]", "[21:31]", "[31:41]","[41:51]", "[51:61]", "[61:71]"]
-tuder = range(5, 0, -1)
-
-fig,ax = plt.subplots()
-im = ax.imshow(mogens)
-ax.set_yticks(range(len(tuder)), lables="rating")
-ax.set_xticks(range(len(graeder)), lables="bins")
+fig, ax = plt.subplots()
+im = ax.imshow(heatmap)
+ax.set_yticks(range(len(rating_labels)), lables="rating")
+ax.set_xticks(range(len(bin_labels)), lables="bins")
 ax.set_ylabel("Rating")
 ax.set_xlabel("Bins")
-ax.set_xticklabels(graeder)
-ax.set_yticklabels(tuder)
-
-print("BINS: ", len(bins))
+ax.set_xticklabels(bin_labels)
+ax.set_yticklabels(rating_labels)
 
 for i in range(5):
-    for j in range(len(bins)-1):
-        text = ax.text(j, i, mogens[i, j], ha="center", va="center")
+    for j in range(len(bins) - 1):
+        text = ax.text(j, i, heatmap[i, j], ha="center", va="center")
 
 fig.tight_layout()
 plt.show()
-# %%
