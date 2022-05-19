@@ -35,10 +35,13 @@ df = df[df["verified"] == True]
 # remove unixReviewTime
 df.drop(["unixReviewTime","reviewerID", "image", "style", "asin"], axis=1, inplace=True)
 
+# rename overall to rating
+df.rename(columns = {"overall": "rating"}, inplace=True)
+
 # set votes containing NaN to 0
 df["vote"] = df["vote"].fillna(0)
 # overall to int from float
-df["overall"] = df["overall"].astype(int)
+df["rating"] = df["rating"].astype(int)
 # remove NaN reviewText
 df["reviewText"] = df["reviewText"].fillna("")
 
