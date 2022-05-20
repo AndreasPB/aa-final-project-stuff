@@ -2,8 +2,12 @@
 import pandas as pd
 import nltk 
 nltk.download('stopwords')
-from nltk.corpus import stopwords
-from nltk.tokenize import ToktokTokenizer
+from nltk.corpus import stopwords, wordnet
+from nltk.tokenize import WhitespaceTokenizer
+from nltk.stem.wordnet import WordNetLemmatizer
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+nltk.download('averaged_perceptron_tagger')
 import json
 import gzip
 
@@ -46,7 +50,6 @@ df["rating"] = df["rating"].astype(int)
 df["reviewText"] = df["reviewText"].fillna("")
 
 # remove stop words
-tokenizer = ToktokTokenizer()
 stop_words = stopwords.words("english")
 df["reviewText"] = df["reviewText"].apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
 
@@ -54,8 +57,27 @@ df["reviewText"] = df["reviewText"].apply(lambda x: ' '.join([word for word in x
 # [^\w\s]' -> looks for anything that isnt a word or whitespace to remove
 df["reviewText"] = df["reviewText"].str.replace('[^\w\s]',"")
 
-# MISSING:
-# - stemming
-# - lemmatization
+w_tokenizer = WhitespaceTokenizer()
+lemmatizer = WordNetLemmatizer()
+
+
+# WordNetLemmatizer.lemmatize() only lemmatizes based on tag-parameter given, e.g. "v" for verb, "n" for noun
+# This method tries to determine the right tag automatically
+def get_wordnet_pos(word):
+    tag = nltk.pos_tag([word])[0][1][0].upper()
+    tag_dict = {"J": wordnet.ADJ,
+                "N": wordnet.NOUN,
+                "V": wordnet.VERB,
+                "R": wordnet.ADV}
+
+    return tag_dict.get(tag, wordnet.NOUN)
+
+
+def lemmatize_text(text):
+    return [lemmatizer.lemmatize(w, get_wordnet_pos(w)) for w in w_tokenizer.tokenize(text)]
+
+
+df["reviewText"] = df["reviewText"].apply(lemmatize_text)
+df['reviewText'] = df['reviewText'].apply(lambda x: " ".join(x))
 
 df.to_csv("magazine_reviews_cleanup.tsv", index=False, sep="\t")
