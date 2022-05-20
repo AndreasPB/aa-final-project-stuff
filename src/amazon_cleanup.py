@@ -37,7 +37,7 @@ def getDF(path):
       break
   return pd.DataFrame.from_dict(df, orient='index')
 
-original_reviews = Path("./data/original")
+original_reviews = Path("../data/original")
 reviews = [getDF(path) for path in original_reviews.iterdir() if path.is_file()]
 df = pd.concat(reviews)
 f"Files: {len(reviews)}, Combined lines: {len(df)}"
@@ -94,4 +94,4 @@ def lemmatize_text(text):
 df["reviewText"] = df["reviewText"].apply(lemmatize_text)
 df['reviewText'] = df['reviewText'].apply(lambda x: " ".join(x))
 
-df.to_csv("data/cleaned_reviews.tsv", index=False, sep="\t")
+df.to_csv("../data/cleaned_reviews.tsv", index=False, sep="\t")
