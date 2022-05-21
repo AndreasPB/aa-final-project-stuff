@@ -1,17 +1,27 @@
 # %%
-import pandas as pd
+import json
+import gzip
+from pathlib import Path
+
 import nltk 
-nltk.download('stopwords')
+import pandas as pd
 from nltk.corpus import stopwords, wordnet
 from nltk.tokenize import WhitespaceTokenizer
 from nltk.stem.wordnet import WordNetLemmatizer
+
+nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 nltk.download('averaged_perceptron_tagger')
-import json
-import gzip
+
+# %% [markdown]
+# # Data Loading
+# 
+# Use `LIMIT` to control the upper limit of objects from each file
 
 # %%
+LIMIT = 10000
+
 def parse(path):
   g = gzip.open(path, 'rb')
   for l in g:
@@ -23,15 +33,19 @@ def getDF(path):
   for d in parse(path):
     df[i] = d
     i += 1
+    if i == LIMIT:
+      break
   return pd.DataFrame.from_dict(df, orient='index')
 
-df = getDF('Magazine_Subscriptions.json.gz')
+original_reviews = Path("./data/original")
+reviews = [getDF(path) for path in original_reviews.iterdir() if path.is_file()]
+df = pd.concat(reviews)
+f"Files: {len(reviews)}, Combined lines: {len(df)}"
 
+# %% [markdown]
+# # Data Cleaning
 
 # %%
-
-# Data cleanup
-
 # lowercase review text
 df["reviewText"] = df["reviewText"].str.lower()
 # remove unverified
@@ -80,4 +94,4 @@ def lemmatize_text(text):
 df["reviewText"] = df["reviewText"].apply(lemmatize_text)
 df['reviewText'] = df['reviewText'].apply(lambda x: " ".join(x))
 
-df.to_csv("magazine_reviews_cleanup.tsv", index=False, sep="\t")
+df.to_csv("data/cleaned_reviews.tsv", index=False, sep="\t")

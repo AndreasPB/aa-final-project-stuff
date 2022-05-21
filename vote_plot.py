@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # %%
-df = pd.read_csv("magazine_reviews_cleanup.tsv", sep="\t")
+df = pd.read_csv("data/cleaned_reviews.tsv", sep="\t")
 df
 
 # %%
@@ -20,6 +20,7 @@ df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
+
 # %%
 votes = df["vote"].value_counts()
 no_votes = votes[0].sum()
@@ -28,6 +29,7 @@ plt.bar(["No votes", "Votes"], [no_votes, has_votes])
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
+
 # %%
 bins = list(range(1, 50 + 25, 10))  # [1, 11, 21, 31, 41, 51, 61, 71]
 
@@ -42,6 +44,7 @@ def split_by_ratings(data: pd.DataFrame) -> list[list]:
 
 
 split_by_ratings(df)
+
 # %%
 heatmap = np.array(split_by_ratings(df))
 

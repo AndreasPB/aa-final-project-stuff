@@ -4,14 +4,14 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
 # %%
-df = pd.read_csv("magazine_reviews_cleanup.tsv", sep="\t")
+df = pd.read_csv("data/cleaned_reviews.tsv", sep="\t")
 
 # %%
 df
 
 # %%
-five_star_reviews = df.loc[df.overall == 5]
-one_star_reviews = df.loc[df.overall == 1]
+five_star_reviews = df.loc[df.rating == 5]
+one_star_reviews = df.loc[df.rating == 1]
 
 # %%
 len(five_star_reviews)
