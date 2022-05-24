@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
 nltk.download("vader_lexicon")
 sentiments = SentimentIntensityAnalyzer()
 
@@ -10,6 +11,7 @@ data = pd.read_csv("../data/cleaned_reviews.tsv", sep="\t")
 print(data.head())
 
 # %%
+# TODO: Thos should be done in cleanup
 data = data.dropna()
 
 ratings = data["rating"].value_counts()
@@ -39,16 +41,10 @@ x = sum(data["Positive"])
 y = sum(data["Negative"])
 z = sum(data["Neutral"])
 
-def sentiment_score(a, b, c):
-    if (a>b) and (a>c):
-        print("Positive")
-        print(f"Score: {a}")
-    elif (b>a) and (b>c):
-        print("Negative")
-        print(f"Score: {b}")
-    else:
-        print("Neutral")
-        print(f"Score: {c}")
-sentiment_score(x, y, z)
+print("Positive: ", x)
+print("Negative: ", y)
+print("Neutral: ", z)
+
+data.to_csv("../data/cleaned_reviews.tsv", index=False, sep="\t")
 
 
