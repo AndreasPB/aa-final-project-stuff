@@ -43,3 +43,5 @@ df["voteSuccess"] = df[["quaterDiff", "vote"]].apply(
 df.sort_values("voteSuccess").tail()
 
 # %%
+df.to_csv("../data/cleaned_reviews.tsv", index=False, sep="\t")
+# %%
