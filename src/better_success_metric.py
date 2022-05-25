@@ -31,9 +31,9 @@ df["quaterDiff"] = df["reviewTime"].apply(quater_diff)
 df["quaterDiff"].head()
 
 # %%
-def calc_vote_success(month_diff: int, votes: int) -> float:
+def calc_vote_success(duration_diff: int, votes: int) -> float:
     soften_success = 2  # Helps soften the division jump
-    return votes / (month_diff + soften_success)
+    return votes / (duration_diff + soften_success)
 
 
 df["voteSuccess"] = df[["quaterDiff", "vote"]].apply(
@@ -44,4 +44,3 @@ df.sort_values("voteSuccess").tail()
 
 # %%
 df.to_csv("../data/cleaned_reviews.tsv", index=False, sep="\t")
-# %%

@@ -50,14 +50,27 @@ f"Files: {len(reviews)}, Combined lines: {len(df)}"
 df["reviewText"] = df["reviewText"].str.lower()
 # remove unverified
 df = df[df["verified"] == True]
+
+# removes all rows with empty review texts
+df.dropna(subset=["reviewText"], inplace=True)
+
 # remove unixReviewTime
 df.drop(["unixReviewTime","reviewerID", "image", "style", "asin"], axis=1, inplace=True)
+
 
 # rename overall to rating
 df.rename(columns = {"overall": "rating"}, inplace=True)
 
+def cast_to_int(votes):
+    try:
+        return int(votes)
+    except:
+        return int(votes.replace(",", ""))
+
 # set votes containing NaN to 0
 df["vote"] = df["vote"].fillna(0)
+df["vote"] = df["vote"].apply(cast_to_int)
+# df["vote"] = df["vote"].astype(int)
 # overall to int from float
 df["rating"] = df["rating"].astype(int)
 # remove NaN reviewText
