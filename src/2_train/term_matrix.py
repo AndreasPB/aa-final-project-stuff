@@ -1,6 +1,5 @@
 # %%
 import random
-from tkinter import W
 
 import pandas as pd
 import numpy as np
