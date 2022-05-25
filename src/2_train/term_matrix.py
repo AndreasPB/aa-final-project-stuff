@@ -10,8 +10,7 @@ from sklearn.metrics import classification_report
 from sklearn.svm import LinearSVC
 
 # %%
-df = pd.read_csv("../data/cleaned_reviews.tsv", sep="\t")
-df.dropna(subset=["reviewText"], inplace=True)
+df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 
 # %%
 # could use LogisticRegression classifier to map our numbers in the range [0,1]

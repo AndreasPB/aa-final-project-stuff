@@ -4,7 +4,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
 # %%
-df = pd.read_csv("../data/cleaned_reviews.tsv", sep="\t")
+df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 
 # %%
 df
@@ -30,9 +30,9 @@ counted_five_star: dict[str, int] = (five_star_words.value_counts()).head(1000).
 
 # %%
 wc_one_star = WordCloud(width=1200, height=500, max_words=500).generate_from_frequencies(counted_one_star)
-wc_one_star.to_file("../report/img/one_star_wordcloud.png")
+wc_one_star.to_file("../../report/img/one_star_wordcloud.png")
 wc_five_star = WordCloud(width=1200, height=500, max_words=500).generate_from_frequencies(counted_five_star)
-wc_five_star.to_file("../report/img/five_star_wordcloud.png")
+wc_five_star.to_file("../../report/img/five_star_wordcloud.png")
 
 # %%
 plt.figure(figsize=(10, 10))

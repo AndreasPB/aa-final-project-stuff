@@ -7,7 +7,7 @@ import nltk
 
 
 # %%
-df = pd.read_csv("data/cleaned_reviews.tsv", sep="\t")
+df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 
 df["rating"] = df["rating"].astype(int)
 df = df[df["rating"] != 3]
@@ -22,3 +22,5 @@ vectorizer = TfidfVectorizer(ngram_range=(1, 1), min_df=0.01)
 positive_features = vectorizer.fit_transform(df_positive["reviewText"].values.astype('U'))
 negative_features = vectorizer.fit_transform(df_negative["reviewText"].values.astype('U'))
 print(positive_features)
+
+# %%
