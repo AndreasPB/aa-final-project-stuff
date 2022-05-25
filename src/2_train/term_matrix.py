@@ -1,5 +1,6 @@
 # %%
 import random
+from tkinter import W
 
 import pandas as pd
 import numpy as np
@@ -11,6 +12,8 @@ from sklearn.svm import LinearSVC
 
 # %%
 df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
+df.dropna(subset=["reviewText"], inplace=True)
+df.head()
 
 # %%
 # could use LogisticRegression classifier to map our numbers in the range [0,1]
@@ -20,10 +23,7 @@ df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 
 split = 0.1
 
-
 df["helpful"] = np.where(df.voteSuccess >= split, 1, 0)
-df_helpful = df.loc[df.helpful == 1]
-df_unhelpful = df.loc[df.helpful == 0]
 
 x_train, x_test, y_train, y_test = train_test_split(df.reviewText, df.helpful, test_size=0.25, random_state=30)
 
