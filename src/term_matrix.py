@@ -1,12 +1,13 @@
 # %%
+import random
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.svm import LinearSVC
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-
 
 # %%
 df = pd.read_csv("../data/cleaned_reviews.tsv", sep="\t")
@@ -25,11 +26,9 @@ df["helpful"] = np.where(df.voteSuccess >= split, 1, 0)
 df_helpful = df.loc[df.helpful == 1]
 df_unhelpful = df.loc[df.helpful == 0]
 
-df.dropna(subset=["reviewText"], inplace=True)
 x_train, x_test, y_train, y_test = train_test_split(df.reviewText, df.helpful, test_size=0.25, random_state=30)
 
 # %%
-
 tm_vectorizer = CountVectorizer(stop_words="english")
 
 term_matrix_train = tm_vectorizer.fit_transform(x_train)
@@ -41,23 +40,22 @@ clf = LinearSVC(random_state=0, max_iter=10000)
 clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
-
-classification_report(y_test, y_test_pred, output_dict=True)
 # %%
+print("Document-term Matrix(Count Vectorizer) - SVM/SVC")
+print(classification_report(y_test, y_test_pred, target_names=["Unhelpful", "Helpful"]))
 
+# %%
 plt.figure(figsize=(10, 8))# Plotting our two-features-space
 mtrx_dict = term_matrix_train.todok()
-xy = list(mtrx_dict.keys())[:1000]
+xy = list(mtrx_dict.keys())
 
-colors=["#0000FF", "#00FF00"]
+colors=["#FF0000", "#0000FF"]
 
 fig = plt.figure()
 ax = fig.add_subplot()
 
-data = list(zip(xy, y_train[:1000]))
-
+LIMIT = 2500
+data = random.sample(list(zip(xy, y_train)), LIMIT)
 for i in range(len(data)):
-    ax.scatter(x=data[i][0][0], y=data[i][0][1], color=colors[data[i][1]], alpha=0.2)
+    ax.scatter(x=data[i][0][0], y=data[i][0][1], color=colors[data[i][1]], alpha=0.4)
 plt.show()
-
-# %%

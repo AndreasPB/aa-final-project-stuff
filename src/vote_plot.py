@@ -8,14 +8,14 @@ df = pd.read_csv("../data/cleaned_reviews.tsv", sep="\t")
 df
 
 # %%
-bins = list(range(0, 50 + 25, 10))
+bins = list(range(0, 75, 10))
 df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
 
 # %%
-bins = list(range(1, 50 + 25, 10))
+bins = list(range(1, 75, 10))
 df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
@@ -31,7 +31,7 @@ plt.xlabel("Vote")
 plt.legend(["Review votes"])
 
 # %%
-bins = list(range(1, 50 + 25, 10))  # [1, 11, 21, 31, 41, 51, 61, 71]
+bins = list(range(1, 75, 10))  # [1, 11, 21, 31, 41, 51, 61, 71]
 
 
 def split_by_ratings(data: pd.DataFrame) -> list[list]:
@@ -64,7 +64,7 @@ im = ax.imshow(heatmap)
 ax.set_yticks(range(len(rating_labels)), lables="rating")
 ax.set_xticks(range(len(bin_labels)), lables="bins")
 ax.set_ylabel("Rating")
-ax.set_xlabel("Bins")
+ax.set_xlabel("Votes")
 ax.set_xticklabels(bin_labels)
 ax.set_yticklabels(rating_labels)
 
