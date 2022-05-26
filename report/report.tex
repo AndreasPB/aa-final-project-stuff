@@ -109,7 +109,17 @@ The main focus of this paper is to analyze Amazon review data across different c
 
 %------------------------------------------------
 \section{Methods}
+We have made use of the agile and iterative research approach proposed in Nunamaker et al., to continuously gain feedback on the activities involved in our process.
 
+Our research aims at creating a predictive model for identifying helpful Amazon reviews. Therefore, the data used in this study is a subset of Amazon product reviews divided into categories, with each product and reviewer having at least 5 reviews.
+
+As our model is primarily trained on text data, common Natural Language Processing techniques have been used in the preprocessing of data and the subsequent structuring of this data into input data.
+
+For converting our text data into parametric data for use in building our model, we have chosen to use document-term matrices through Count Vectorization and TF-IDF Vectorization. By employing two methods of text vectorization, we can more easily determine which term weighing factor improves the most upon the performance metrics of our model.
+
+Since we are dealing with a binary classification problem due to separation of reviews into two groups - helpful and unhelpful - we make use of several different classifiers in training our model. We are labelling each review on its helpfulness feature to make supervised learning through each of these classifiers possible.
+
+For our model evaluation we make use of primarily two statistics. A confusion matrix is used in summarizing the performance of the classifier algorithms used in training our model. As mentioned, we are dealing with a binary classification problem, and as in many problems of this nature, the two groups are not symmetric. Therefore we also apply Youden's Index to make up for our unbalanced dataset, using this statistic as a final measure of our model's predictive power.
 \subsection{Data exploration}
 
 With the cleaned up dataset and the research question in mind, columns with relevance are explored. To explore, we plot different columns of interest to identify any patterns in the data in connection to review helpfulness. We plot the distribution between reviews with votes and no votes.
