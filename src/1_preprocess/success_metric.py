@@ -5,7 +5,7 @@ from dateutil import relativedelta
 import pandas as pd
 
 # %%
-df = pd.read_csv("../data/cleaned_reviews.tsv", sep="\t")
+df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 df.head()
 
 # %%
@@ -43,4 +43,4 @@ df["voteSuccess"] = df[["quaterDiff", "vote"]].apply(
 df.sort_values("voteSuccess").tail()
 
 # %%
-df.to_csv("../data/cleaned_reviews.tsv", index=False, sep="\t")
+df.to_csv("../../data/cleaned_reviews.tsv", index=False, sep="\t")

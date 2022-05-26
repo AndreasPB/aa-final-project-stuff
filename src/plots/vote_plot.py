@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # %%
-df = pd.read_csv("../data/cleaned_reviews.tsv", sep="\t")
+df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 df
 
 # %%
