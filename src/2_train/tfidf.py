@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.svm import LinearSVC
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, balanced_accuracy_score
 
 # %% [markdown]
 # ## Read the data
@@ -23,7 +23,9 @@ split = 0.1
 
 df["helpful"] = np.where(df.voteSuccess >= split, 1, 0)
 
-x_train, x_test, y_train, y_test = train_test_split(df.reviewText, df.helpful, test_size=0.25, random_state=30)
+x_train, x_test, y_train, y_test = train_test_split(
+    df.reviewText, df.helpful, test_size=0.25, random_state=30
+)
 
 # %% [markdown]
 # ## Vectorization with TF-IDF
@@ -31,8 +33,8 @@ x_train, x_test, y_train, y_test = train_test_split(df.reviewText, df.helpful, t
 # %%
 
 vectorizer = TfidfVectorizer(ngram_range=(1, 1), min_df=0.01)
-tfidf_train = vectorizer.fit_transform(x_train.values.astype('U'))
-tfidf_test = vectorizer.transform(x_test.values.astype('U'))
+tfidf_train = vectorizer.fit_transform(x_train.values.astype("U"))
+tfidf_test = vectorizer.transform(x_test.values.astype("U"))
 
 # %% [markdown]
 # ## Fitting
@@ -47,5 +49,8 @@ y_test_pred = clf.predict(tfidf_test)
 # ## Result
 
 # %%
-print("Document-term Matrix(Count Vectorizer) - SVM/SVC")
+print("Document-term Matrix(TF-IDF Vectorizer) - SVM/SVC")
 print(classification_report(y_test, y_test_pred, target_names=["Unhelpful", "Helpful"]))
+
+# %%
+print(balanced_accuracy_score(y_test, y_test_pred, adjusted=True))
