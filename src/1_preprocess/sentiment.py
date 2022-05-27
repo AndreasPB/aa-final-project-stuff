@@ -7,7 +7,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 nltk.download("vader_lexicon")
 sentiments = SentimentIntensityAnalyzer()
 
-data = pd.read_csv("../data/cleaned_reviews.tsv", sep="\t")
+data = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 print(data.head())
 
 # %%
