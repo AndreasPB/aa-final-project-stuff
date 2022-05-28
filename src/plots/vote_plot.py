@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # %%
+EXPORT_PLOTS = False
 df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 df
 
@@ -13,6 +14,8 @@ df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
+if EXPORT_PLOTS:
+    plt.savefig("../../report/img/votes_binned_including_0.svg", bbox_inches="tight")
 
 # %%
 bins = list(range(1, 75, 10))
@@ -20,6 +23,8 @@ df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
+if EXPORT_PLOTS:
+    plt.savefig("../../report/img/votes_binned_excluding_0.svg", bbox_inches="tight")
 
 # %%
 votes = df["vote"].value_counts()
@@ -29,6 +34,8 @@ plt.bar(["No votes", "Votes"], [no_votes, has_votes])
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
+if EXPORT_PLOTS:
+    plt.savefig("../../report/img/no_votes_vs_votes.svg", bbox_inches="tight")
 
 # %%
 bins = list(range(1, 75, 10))  # [1, 11, 21, 31, 41, 51, 61, 71]
@@ -72,5 +79,5 @@ for i in range(5):
     for j in range(len(bins) - 1):
         text = ax.text(j, i, heatmap[i, j], ha="center", va="center")
 
-fig.tight_layout()
-plt.show()
+if EXPORT_PLOTS:
+    plt.savefig("../../report/img/rating_vote_heatmap_excluding_no_votes.svg")
