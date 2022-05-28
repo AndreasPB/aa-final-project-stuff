@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve
@@ -6,7 +8,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn import metrics
 
 
-def summary_report(y_test: list, y_test_pred: list, msg: str | None):
+def summary_report(y_test: list, y_test_pred: list, msg: Optional[str] = None):
     if msg:
         print(msg)
 
