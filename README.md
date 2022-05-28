@@ -1,2 +1,2 @@
 # aa-final-project-stuff
-Amazon reivew
+Amazon review
