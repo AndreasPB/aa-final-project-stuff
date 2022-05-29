@@ -44,46 +44,24 @@ term_matrix_test = tm_vectorizer.transform(x_test)
 
 # %% [markdown]
 # ## Fitting
-# %%
-clf = LinearSVC(random_state=0, max_iter=10000)
 
-clf.fit(term_matrix_train, y_train)
-y_test_pred = clf.predict(term_matrix_test)
-
-# %%
-# Random Forest
+# %% [markdown]
+# # Random Forest
 rfc = RandomForestClassifier(n_estimators=150, max_depth=150, random_state=0, n_jobs=-1, verbose=True)
 rfc.fit(term_matrix_train, y_train)
 y_test_pred = rfc.predict(term_matrix_test)
 
 # %%
-# LogisticRegression
+summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - RandomForestClassifier")
+
+# %% [markdown]
+# # LogisticRegression
 lgr = LogisticRegression(random_state=0, max_iter=10000)
 lgr.fit(term_matrix_train, y_train)
 y_test_pred = lgr.predict(term_matrix_test)
 
-# %% [markdown]
-# ## Result
-# TODO: use summary_report
-print("Document-term Matrix(Count Vectorizer) - SVM/SVC")
-print(evaluate(y_test_pred, y_test))
-print(classification_report(y_test, y_test_pred, target_names=["Unhelpful", "Helpful"]))
-
-# %%
-plt.figure(figsize=(10, 8))# Plotting our two-features-space
-mtrx_dict = term_matrix_train.todok()
-xy = list(mtrx_dict.keys())
-
-colors = ["#FF0000", "#0000FF"]
-
-fig = plt.figure()
-ax = fig.add_subplot()
-
-LIMIT = 2500
-data = random.sample(list(zip(xy, y_train)), LIMIT)
-for i in range(len(data)):
-    ax.scatter(x=data[i][0][0], y=data[i][0][1], color=colors[data[i][1]], alpha=0.4)
-plt.show()
+# %% 
+summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - LogisticRegression")
 
 # %% [markdown]
 # # Support-Vector Machine
@@ -96,7 +74,7 @@ clf = LinearSVC(random_state=0, max_iter=5000, verbose=True)
 clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
-# %%
+# %% 
 summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - SVM/SVC")
 
 # %% [markdown]
@@ -113,7 +91,7 @@ clf = MLPClassifier(
 clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
-# %%
+# %% 
 summary_report(
     y_test,
     y_test_pred,
@@ -130,3 +108,18 @@ clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
 summary_report(y_test, y_test_pred, "MLPClassifier")
+# %%
+plt.figure(figsize=(10, 8))# Plotting our two-features-space
+mtrx_dict = term_matrix_train.todok()
+xy = list(mtrx_dict.keys())
+
+colors = ["#FF0000", "#0000FF"]
+
+fig = plt.figure()
+ax = fig.add_subplot()
+
+LIMIT = 2500
+data = random.sample(list(zip(xy, y_train)), LIMIT)
+for i in range(len(data)):
+    ax.scatter(x=data[i][0][0], y=data[i][0][1], color=colors[data[i][1]], alpha=0.4)
+plt.show()
