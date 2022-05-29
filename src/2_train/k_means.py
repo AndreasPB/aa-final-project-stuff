@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 data = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 
 #make a copy of columns I need from raw data
-df1 = data.iloc[:, [4,5,6,9]]
+df1 = data
 df1.head()
 
 # %%
-df1["helpful"] = np.where(data.voteSuccess >= 0.01, 1, 0)
+df1["helpful"] = np.where(data.vote >= 0.01, 1, 0)
 
 df1.head(100)
 
@@ -27,19 +27,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 vectorizer = TfidfVectorizer(min_df = 0.1, max_df=0.9,
                              ngram_range=(1, 4), 
                              stop_words='english')
-vectorizer.fit(df2['reviewText'])
+vectorizer.fit(df2['reviewText'].values.astype("U"))
 
 # %%
-#tokenize text with Tfidf
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-vectorizer = TfidfVectorizer(min_df = 0.1, max_df=0.9,
-                             ngram_range=(1, 4), 
-                             stop_words='english')
-vectorizer.fit(df2['reviewText'])
-
-# %%
-X_train = vectorizer.transform(df2['reviewText'])
+X_train = vectorizer.transform(df2['reviewText'].values.astype("U"))
 vocab = vectorizer.get_feature_names()
 
 # %%
@@ -80,10 +71,10 @@ model = KMeans(n_clusters=4, init='k-means++', max_iter=100, n_init=1,random_sta
 vectorizer = TfidfVectorizer(min_df = 0.05, max_df=0.95,
                              ngram_range=(1, 2), 
                              stop_words='english')
-vectorizer.fit(df1['reviewText'])
+vectorizer.fit(df1['reviewText'].values.astype("U"))
 
 # %%
-X_train = vectorizer.transform(df1['reviewText'])
+X_train = vectorizer.transform(df1['reviewText'].values.astype("U"))
 vocab = vectorizer.get_feature_names()
 sse_err = []
 res = model.fit(X_train)
