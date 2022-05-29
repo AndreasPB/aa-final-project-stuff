@@ -8,6 +8,7 @@ from sklearn.svm import LinearSVC
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, balanced_accuracy_score
+from sklearn.cluster import KMeans
 
 from util import summary_report
 
@@ -68,4 +69,15 @@ clf.fit(tfidf_train, y_train)
 y_test_pred = clf.predict(tfidf_test)
 
 # %%
+summary_report(y_test, y_test_pred, "MLPClassifier")
+
+# %% [markdown]
+# # KMeans clustering
+
+# %%
+clf = KMeans(n_clusters=2, init="k-means++", max_iter=100, n_init=5, random_state=5)
+
+clf.fit(tfidf_train, y_train)
+y_test_pred = clf.predict(tfidf_test)
+
 summary_report(y_test, y_test_pred, "MLPClassifier")

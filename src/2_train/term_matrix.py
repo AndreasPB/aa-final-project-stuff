@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
+from sklearn.cluster import KMeans
 
 from util import summary_report
 
@@ -82,3 +83,14 @@ summary_report(
     y_test_pred,
     "Document-term Matrix(Count Vectorizer) - Multi-layer Perceptron (MLP)",
 )
+
+# %% [markdown]
+# # KMeans clustering
+
+# %%
+clf = KMeans(n_clusters=2, init="k-means++", max_iter=100, n_init=1, random_state=5)
+
+clf.fit(term_matrix_train, y_train)
+y_test_pred = clf.predict(term_matrix_test)
+
+summary_report(y_test, y_test_pred, "MLPClassifier")
