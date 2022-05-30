@@ -137,7 +137,7 @@ As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very u
 	\begin{center}
 		\begin{tabular}{||c c c c c c||}
 			\hline
-			Count/TF-IDF & Classifier  & Train-set size & Parameters     & Time spend            & Youden’s Index \\ [0.5ex]
+			Count/TF-IDF & Classifier  & Train-set size & Parameters     & Time spend            & Youden's Index \\ [0.5ex]
 
 			\hline\hline
 			Count        & MLP         & 876.132        & LBFGS, 1x50    & 23min 5sec (i7 8700k) & 0.25646        \\
@@ -152,6 +152,9 @@ As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very u
 			Count        & LogisticReg & 107.302        & max iter=10000 & 17 sec (i7 6700k)     & 0.22513        \\
 
 			\hline
+			Count        & MLP         & 107302         & LBFGS, 1x50    & 2min 25sec(M1 Air)    & 0.22214        \\
+
+			\hline
 			Count        & SVC         & 107.302        & max iter=5000  & 58sec (M1 Air)        & 0.21384        \\
 
 			\hline
@@ -162,7 +165,6 @@ As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very u
 
 			\hline
 			TF-IDF       & SVC         & 107.391        & max iter=5000  & 1.4sec (i7 6700k)     & 0.06107        \\
-
 
 
 			\hline
@@ -186,9 +188,11 @@ As the final step of our data cleanup a column “voteSuccess” was added to th
 \subsection{Model building}
 After trying SVM as our first classifier, we wanted to try a neural network on the dataset. Both SVM and neural network seemed like a great place to start, since they can be used in most machine learning tasks and yield decent results.
 
-We’ve used the Multi-layer Perceptron classifier with different amounts of hidden layers, nodes and solvers.
+We've used the Multi-layer Perceptron classifier with different amounts of hidden layers, nodes and solvers.
 
-During our testing the performance has scaled positively as the size of the dataset increases, especially with the Adam solver, which matches scikit-learn's documentation\cite{sklearn:MLPClassifier}. The cost of using the Adam solver over the LBFGS is higher, increasing the fitting sixfold on a training set of 42.000 documents. It showed a slightly higher performance when applying Youden’s Index. 2 hidden layers of 100 nodes performs slightly better than 1 layer of 100 nodes, but increases the model fitting duration dramatically*. 1 layer of 25 nodes seems to perform worse with both solvers.
+During our testing the performance scaled positively as the size of the dataset increased. The cost of using the Adam solver over the LBFGS is higher, increasing the fitting dramatically as the training set grows, which matches scikit-learn's documentation\cite{sklearn:MLPClassifier}.
+
+Playing around with the nodes and layers got us to the ideal spot of 1 layer of 50 nodes, which scored highest on the Youden's Index % ###.
 
 %------------------------------------------------
 
