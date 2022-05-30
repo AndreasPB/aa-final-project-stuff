@@ -60,6 +60,8 @@
 
 \usepackage{hyperref} % For hyperlinks in the PDF
 
+\usepackage{graphicx}
+
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
@@ -108,19 +110,39 @@ The main focus of this paper is to analyze Amazon review data across different c
 %------------------------------------------------
 \section{Methods}
 
-Maecenas sed ultricies felis. Sed imperdiet dictum arcu a egestas.
-\begin{itemize}
-	\item Donec dolor arcu, rutrum id molestie in, viverra sed diam
-	\item Curabitur feugiat
-	\item turpis sed auctor facilisis
-	\item arcu eros accumsan lorem, at posuere mi diam sit amet tortor
-	\item Fusce fermentum, mi sit amet euismod rutrum
-	\item sem lorem molestie diam, iaculis aliquet sapien tortor non nisi
-	\item Pellentesque bibendum pretium aliquet
-\end{itemize}
-\blindtext % Dummy text
+\subsection{Data exploration}
 
-Text requiring further explanation\footnote{Example footnote}.
+With the cleaned up dataset and the research question in mind*, columns with relevance are explored. To explore, we plot different columns of interest to identify any patterns in the data. We plot the distribution between reviews with votes and no votes as well as review rating.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/no_votes_vs_votes.pdf}
+	\caption{Vote distribution}
+	\label{fig:votes_distribution}
+\end{figure}
+As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very uneven in favor of reviews with no votes. This is relevant when evaluating our predictive power. To get another perspective on review votes we plot the data into a heatmap in relation to ratings.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/rating_vote_heatmap_excluding_no_votes.pdf}
+	\caption{Votes in relation to rating}
+	\label{fig:rating_vote_heatmap}
+\end{figure}
+This shows that there is a drastic change after 11 upvotes.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/rating_distribution.pdf}
+	\caption{Rating Distribution}
+	\label{fig:rating_distribution}
+\end{figure}
+Here we see a pattern that reviewers tend to give 5-star ratings.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/one_star_wordcloud.png}
+	\caption{Common words used in 1-star reviews}
+	\includegraphics[width=0.5\textwidth]{img/five_star_wordcloud.png}
+	\caption{Common words used in 5-star reviews}
+\end{figure}
+Lastly we plot our review text into a wordcloud to get an overview of the differences between 1 and 5 star reviews
+
 
 %------------------------------------------------
 
