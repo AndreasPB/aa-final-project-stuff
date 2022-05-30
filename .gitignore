@@ -1,6 +1,7 @@
 *.DS_Store
 *.tsv
 *.gz
+*.bak*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

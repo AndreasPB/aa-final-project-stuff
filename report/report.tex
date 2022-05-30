@@ -131,6 +131,48 @@ As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very u
 
 %------------------------------------------------
 
+\begin{figure*}[t]
+	\centering% Do not use center environment, it adds additional vertical space
+
+	\begin{center}
+		\begin{tabular}{||c c c c c c||}
+			\hline
+			Count/TF-IDF & Classifier  & Train-set size & Parameters     & Time spend            & Youden's Index \\ [0.5ex]
+
+			\hline\hline
+			Count        & MLP         & 876.132        & LBFGS, 1x50    & 23min 5sec (i7 8700k) & 0.25646        \\
+
+			\hline
+			Count        & MLP         & 241.209        & Adam, 2x100    & 184min 24sec (M1 Air) & 0.23941        \\
+
+			\hline
+			Count        & MLP         & 107.302        & LBFGS, 1x100   & 2min 3sec (M1 Air)    & 0.23504        \\
+
+			\hline
+			Count        & LogisticReg & 107.302        & max iter=10000 & 17 sec (i7 6700k)     & 0.22513        \\
+
+			\hline
+			Count        & MLP         & 107302         & LBFGS, 1x50    & 2min 25sec(M1 Air)    & 0.22214        \\
+
+			\hline
+			Count        & SVC         & 107.302        & max iter=5000  & 58sec (M1 Air)        & 0.21384        \\
+
+			\hline
+			Count        & MLP         & 107.302        & Adam, 1x100    & 63min 2sec (M1 Air)   & 0.18065        \\
+
+			\hline
+			TF-IDF       & LogisticReg & 107.391        & max iter=10000 & 0.3sec (i7 6700k)     & 0.12344        \\
+
+			\hline
+			TF-IDF       & SVC         & 107.391        & max iter=5000  & 1.4sec (i7 6700k)     & 0.06107        \\
+
+
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Model test runs}\label{Si_Results}
+\end{figure*}
+
 \section{Analysis}
 
 \subsection{Data Preprocessing}
@@ -141,6 +183,17 @@ As our input data mainly consists of unstructured text reviews, text normalizati
 Each review was then tokenized into separate words using whitespace as a delimiter, as part of lemmatization to reduce morphological variation. Shortening some words to their root was thought important to improve model training efficiency. Lemmatization was chosen over stemming, as the accuracy of a lemmatizer in properly shortening words was more important than the speed of a stemmer.
 
 As the final step of our data cleanup a column “voteSuccess” was added to the dataframe, calculating helpfulness of a review by dividing number of votes from the “votes”-column by quarters elapsed since the review was submitted. This was done to create a fairer indicator of helpfulness, since newer reviews would have had less time to accumulate helpfulness-votes and therefore appear less helpful.
+
+
+\subsection{Model building}
+After trying SVM as our first classifier, we wanted to try a neural network on the dataset. Both SVM and neural network seemed like a great place to start, since they can be used in most machine learning tasks and yield decent results.
+
+We've used the Multi-layer Perceptron classifier with different amounts of hidden layers, nodes and solvers.
+
+During our testing the performance scaled positively as the size of the dataset increased. The cost of using the Adam solver over the LBFGS is higher, increasing the fitting dramatically as the training set grows, which matches scikit-learn's documentation\cite{sklearn:MLPClassifier}.
+
+Playing around with the nodes and layers got us to the ideal spot of 1 layer of 50 nodes, which scored highest on the Youden's Index % ###.
+
 %------------------------------------------------
 
 \section{Findings}
@@ -168,7 +221,9 @@ A statement requiring citation \cite{Figueredo:2009dg}.
 	Figueredo, A.~J. and Wolf, P. S.~A. (2009).
 	\newblock Assortative pairing and life history strategy - a cross-cultural
 	study.
-	\newblock {\em Human Nature}, 20:317--330.
+
+	\bibitem[scikit-learn MLPClassifier]{sklearn:MLPClassifier}
+	\url{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html} \newblock {\em Human Nature}, 20:317--330.
 
 \end{thebibliography}
 
