@@ -112,11 +112,11 @@ The main focus of this paper is to analyze Amazon review data across different c
 
 \subsection{Data exploration}
 
-With the cleaned up dataset and the research question in mind*, columns with relevance are explored. To explore, we plot different columns of interest to identify any patterns in the data. We plot the distribution between reviews with votes and no votes as well as review rating.
+With the cleaned up dataset and the research question in mind, columns with relevance are explored. To explore, we plot different columns of interest to identify any patterns in the data. We plot the distribution between reviews with votes and no votes.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/no_votes_vs_votes.pdf}
-	\caption{Vote distribution}
+	\caption{Upvote distribution}
 	\label{fig:votes_distribution}
 \end{figure}
 As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very uneven in favor of reviews with no votes. This is relevant when evaluating performance metrics of our model, as it indicates that a statistic like Youden's Index might be useful to counteract random guessing. To get another perspective on review votes we plot the data into a heatmap in relation to ratings.
@@ -126,22 +126,7 @@ As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very u
 	\caption{Votes in relation to rating}
 	\label{fig:rating_vote_heatmap}
 \end{figure}
-\figurename{\ref{fig:rating_vote_heatmap}} shows there is a drastic change after 11 upvotes. The reason could be that they dont see the need to upvote more when looking at upvotes combined with the rating, but this is nothing more than speculation.
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\textwidth]{img/rating_distribution.pdf}
-	\caption{Rating Distribution}
-	\label{fig:rating_distribution}
-\end{figure}
-Plotting the rating distribution, seen in \figurename{\ref{fig:rating_distribution}} we see a pattern that reviewers tend to give 5-star ratings. This might point to helpful reviews being of a more positive sentiment.
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\textwidth]{img/one_star_wordcloud.png}
-	\caption{Common words used in 1-star reviews}
-	\includegraphics[width=0.5\textwidth]{img/five_star_wordcloud.png}
-	\caption{Common words used in 5-star reviews}
-\end{figure}
-Lastly we plot our review text into a wordcloud to get an overview of the differences between 1 and 5 star reviews
+\figurename{\ref{fig:rating_vote_heatmap}} shows the ratings binned with the amount of votes. This heatmap only shows reviews with votes. The heatmap gives an indication of how votes combined with ratings are distributed in our dataset in a more specific way with the binned votes compared to \figurename{\ref{fig:votes_distribution}}.
 
 
 %------------------------------------------------
