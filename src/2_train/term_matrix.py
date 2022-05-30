@@ -47,12 +47,18 @@ term_matrix_test = tm_vectorizer.transform(x_test)
 
 # %% [markdown]
 # # Random Forest
-rfc = RandomForestClassifier(n_estimators=150, max_depth=150, random_state=0, n_jobs=-1, verbose=True)
+rfc = RandomForestClassifier(
+    n_estimators=150, max_depth=150, random_state=0, n_jobs=-1, verbose=True
+)
 rfc.fit(term_matrix_train, y_train)
 y_test_pred = rfc.predict(term_matrix_test)
 
 # %%
-summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - RandomForestClassifier")
+summary_report(
+    y_test,
+    y_test_pred,
+    "Document-term Matrix(Count Vectorizer) - RandomForestClassifier",
+)
 
 # %% [markdown]
 # # LogisticRegression
@@ -60,8 +66,10 @@ lgr = LogisticRegression(random_state=0, max_iter=10000)
 lgr.fit(term_matrix_train, y_train)
 y_test_pred = lgr.predict(term_matrix_test)
 
-# %% 
-summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - LogisticRegression")
+# %%
+summary_report(
+    y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - LogisticRegression"
+)
 
 # %% [markdown]
 # # Support-Vector Machine
@@ -74,7 +82,7 @@ clf = LinearSVC(random_state=0, max_iter=5000, verbose=True)
 clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
-# %% 
+# %%
 summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - SVM/SVC")
 
 # %% [markdown]
@@ -91,7 +99,7 @@ clf = MLPClassifier(
 clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
-# %% 
+# %%
 summary_report(
     y_test,
     y_test_pred,
@@ -109,7 +117,7 @@ y_test_pred = clf.predict(term_matrix_test)
 
 summary_report(y_test, y_test_pred, "MLPClassifier")
 # %%
-plt.figure(figsize=(10, 8))# Plotting our two-features-space
+plt.figure(figsize=(10, 8))  # Plotting our two-features-space
 mtrx_dict = term_matrix_train.todok()
 xy = list(mtrx_dict.keys())
 
