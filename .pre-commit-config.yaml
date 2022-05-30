@@ -3,3 +3,8 @@ repos:
     rev: V3.17.2
     hooks:
       - id: latexindent
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+      - id: black-jupyter
