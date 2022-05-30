@@ -134,16 +134,17 @@ As our input data mainly consists of unstructured text reviews, text normalizati
 Each review was then tokenized into separate words using whitespace as a delimiter, as part of lemmatization to reduce morphological variation. Shortening some words to their root was thought important to improve model training efficiency. Lemmatization was chosen over stemming, as the accuracy of a lemmatizer in properly shortening words was more important than the speed of a stemmer.
 
 As the final step of our data cleanup a column “voteSuccess” was added to the dataframe, calculating helpfulness of a review by dividing number of votes from the “votes”-column by quarters elapsed since the review was submitted. This was done to create a fairer indicator of helpfulness, since newer reviews would have had less time to accumulate helpfulness-votes and therefore appear less helpful.
+
+\subsection{Ethics and bias}
+When you consider ethics in NLP, you need to first look at the bias the can occur. A review might say “Great product, used it for a week!”. This is perceived as helpful by some customers, since the reviewer expresses their opinion on the product with sentiment information. But some other consumer might not find it helpful due to the lack of more details or an analysis of the product. This leads to reviews being biased towards the consumers uses, and needs.
+
+Another thing that frequently occurs in reviews is herd behaviour. If we have a product, then depending on the first review given to it, other reviews might tend to follow. If the first review is very positive, other reviews might have a tendency to also grade the product higher. This leads to reviews being untrustworthy.
+ \cite{Yves:2018dg}.
 %------------------------------------------------
 
 \section{Findings}
 
 \subsection{Subsection One}
-
-A statement requiring citation \cite{Figueredo:2009dg}.
-\blindtext % Dummy text
-
-\subsection{Subsection Two}
 
 \blindtext % Dummy text
 
@@ -163,6 +164,11 @@ Figueredo, A.~J. and Wolf, P. S.~A. (2009).
   study.
 \newblock {\em Human Nature}, 20:317--330.
  
+
+\bibitem[Yves Rychener, 2018]{Yves:2018dg}
+Yves Rychener, Nicolas Zimmermann, Loïs Bilat
+\newblock Detecting Bias in Amazon reviews
+\url{https://ada-lyn.github.io/}
 \end{thebibliography}
 
 %----------------------------------------------------------------------------------------
