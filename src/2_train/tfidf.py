@@ -4,10 +4,11 @@
 # %%
 import pandas as pd
 import numpy as np
+from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, balanced_accuracy_score
 from sklearn.cluster import KMeans
 
 from util import summary_report
@@ -42,17 +43,33 @@ tfidf_test = vectorizer.transform(x_test.values.astype("U"))
 # %% [markdown]
 # ## Fitting
 
-# %%
-clf = LinearSVC(random_state=0, max_iter=10000)
+# %% [markdown]
+# ## Support-Vector Machine 
+clf = LinearSVC(random_state=0, max_iter=5000)
 
 clf.fit(tfidf_train, y_train)
 y_test_pred = clf.predict(tfidf_test)
 
-# %% [markdown]
-# ## Result
-
 # %%
 summary_report(y_test, y_test_pred, "Document-term Matrix(TF-IDF Vectorizer) - SVM/SVC")
+
+# %% [markdown]
+# ## RandomForestClassifier
+rfc = RandomForestClassifier(n_estimators=150, max_depth=150, random_state=0, n_jobs=-1, verbose=True)
+rfc.fit(tfidf_train, y_train)
+y_test_pred = rfc.predict(tfidf_test)
+
+# %%
+summary_report(y_test, y_test_pred, "Document-term Matrix(TF-IDF Vectorizer) - RandomForestClassifier")
+
+# %% [markdown]
+# ## LogisticRegression
+lgr = LogisticRegression(random_state=0, max_iter=10000)
+lgr.fit(tfidf_train, y_train)
+y_test_pred = lgr.predict(tfidf_test)
+
+# %%
+summary_report(y_test, y_test_pred, "Document-term Matrix(TF-IDF Vectorizer) - LogisticRegression")
 
 # %% [markdown]
 # # Neural Network

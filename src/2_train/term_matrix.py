@@ -1,23 +1,29 @@
+# %% [markdown]
+# # CountVectorizer
+
 # %%
 import random
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.cluster import KMeans
 
 from util import summary_report
 
-# %%
+# %% [markdown]
+# ## Read the data
+
 df = pd.read_csv("../../data/cleaned_reviews.tsv", sep="\t")
 df.dropna(subset=["reviewText"], inplace=True)
 df.head()
 
-# %%
-# could use LogisticRegression classifier to map our numbers in the range [0,1]
-# Compare how it performes with TF-IDF
+# %% [markdown]
+# ## Defining a helpful review + Splitting the data
 
 split = 0.01
 
@@ -28,26 +34,34 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 f"x_train: {x_train.shape}, y_train: {y_train.shape}, x_test: {x_test.shape}, y_test: {y_test.shape}"
 
-# %%
+# %% [markdown]
+# ## Vectorization with CountVectorizer
+
 tm_vectorizer = CountVectorizer(stop_words="english")
 
 term_matrix_train = tm_vectorizer.fit_transform(x_train)
 term_matrix_test = tm_vectorizer.transform(x_test)
 
-plt.figure(figsize=(10, 8))  # Plotting our two-features-space
-mtrx_dict = term_matrix_train.todok()
-xy = list(mtrx_dict.keys())
+# %% [markdown]
+# ## Fitting
 
-colors = ["#FF0000", "#0000FF"]
+# %% [markdown]
+# # Random Forest
+rfc = RandomForestClassifier(n_estimators=150, max_depth=150, random_state=0, n_jobs=-1, verbose=True)
+rfc.fit(term_matrix_train, y_train)
+y_test_pred = rfc.predict(term_matrix_test)
 
-fig = plt.figure()
-ax = fig.add_subplot()
+# %%
+summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - RandomForestClassifier")
 
-LIMIT = 2500
-data = random.sample(list(zip(xy, y_train)), LIMIT)
-for i in range(len(data)):
-    ax.scatter(x=data[i][0][0], y=data[i][0][1], color=colors[data[i][1]], alpha=0.4)
-plt.show()
+# %% [markdown]
+# # LogisticRegression
+lgr = LogisticRegression(random_state=0, max_iter=10000)
+lgr.fit(term_matrix_train, y_train)
+y_test_pred = lgr.predict(term_matrix_test)
+
+# %% 
+summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - LogisticRegression")
 
 # %% [markdown]
 # # Support-Vector Machine
@@ -60,7 +74,7 @@ clf = LinearSVC(random_state=0, max_iter=5000, verbose=True)
 clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
-# %%
+# %% 
 summary_report(y_test, y_test_pred, "Document-term Matrix(Count Vectorizer) - SVM/SVC")
 
 # %% [markdown]
@@ -77,7 +91,7 @@ clf = MLPClassifier(
 clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
-# %%
+# %% 
 summary_report(
     y_test,
     y_test_pred,
@@ -94,3 +108,18 @@ clf.fit(term_matrix_train, y_train)
 y_test_pred = clf.predict(term_matrix_test)
 
 summary_report(y_test, y_test_pred, "MLPClassifier")
+# %%
+plt.figure(figsize=(10, 8))# Plotting our two-features-space
+mtrx_dict = term_matrix_train.todok()
+xy = list(mtrx_dict.keys())
+
+colors = ["#FF0000", "#0000FF"]
+
+fig = plt.figure()
+ax = fig.add_subplot()
+
+LIMIT = 2500
+data = random.sample(list(zip(xy, y_train)), LIMIT)
+for i in range(len(data)):
+    ax.scatter(x=data[i][0][0], y=data[i][0][1], color=colors[data[i][1]], alpha=0.4)
+plt.show()
