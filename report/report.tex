@@ -22,6 +22,7 @@
 \documentclass[twoside,twocolumn]{article}
 
 \usepackage{blindtext} % Package to generate dummy text throughout this template 
+\usepackage{xurl}
 
 \usepackage[numbers]{natbib}
 
@@ -100,6 +101,14 @@ In this paper data gathered from product reviews on the e-commerce site Amazon.c
 %----------------------------------------------------------------------------------------
 %	ARTICLE CONTENTS
 %----------------------------------------------------------------------------------------
+\begin{figure*}[h]
+	\centering% Do not use center environment, it adds additional vertical space
+	\begin{center}
+		\includegraphics[width=\textwidth]{img/unclean_data.pdf}
+		\caption{Unclean data}
+		\label{fig:unclean_data}
+	\end{center}
+\end{figure*}
 
 \section{Introduction}
 In the globalized economy of today, consumers are presented with a range of products to choose from when shopping. This can present some difficulty, as quality of the product is not always clear from its presentation. The customer review seeks to solve this by providing feedback on the purchase. Still, determining the value of a review can be difficult, as reviews can be misleading or provide little information.
@@ -176,14 +185,6 @@ As our model seeks to highlight helpful reviews, and distinguish - or filter - t
 
 Our starting point of data preprocessing was to understand what an Amazon review consists of. The raw data can be seen in \figurename{\ref{fig:unclean_data}}.
 
-\begin{figure}[H]
-	\centering% Do not use center environment, it adds additional vertical space
-	\begin{center}
-		\includegraphics[width=0.5\textwidth]{img/unclean_data.pdf}
-		\caption{Unclean data}
-		\label{fig:unclean_data}
-	\end{center}
-\end{figure}
 Initial data preparation was carried out on the whole dataset, dropping review time, image, style, ASIN, and reviewer id features, as these were not needed. Unverified reviews were also filtered out, to avoid reviews from customers who did not purchase the product. Finally, null values were removed from the review text column.
 
 As our input data consists of unstructured text reviews, text normalization was done on the review text column to reduce randomness and reach a more uniform structure. This was done in accordance with common NLP data cleaning guidelines\cite{NLP}. Steps in this process involved removing non-word elements from the text – punctuation, symbols -, along with transforming each remaining word into lowercase. Because our model concerns itself with classification rather than sentiment, stop words like “not” did not provide any additional information to our model and were subsequently removed, as with other stop words contained in the NLTK “stopwords” library.
@@ -271,16 +272,22 @@ Solely classifying reviews based on term-frequency may not be enough to properly
 
 	\bibitem[scikit-learn, LogisticRegression]{sklearn:LogisticRegression}
 	\url{https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html}
+
 	\bibitem[Jean-Thomas Baillargeon, Luc Lamontagne, and Étienne Marceau.] {bi-normalSeparation}
 	\newblock Weighting Words Using Bi-Normal Separation for Text Classification Tasks with Multiple Classes. ResearchGate, 2019
+
 	\bibitem [Dirk Hovy, Shannon L. Spruit]{censorship}
 	\newblock The Social Impact of Natural Language Processing. Dirkhovy.com, 2018.
+
 	\bibitem[scikit-learn, Count Vectorizer]{sklearn:CountVectorizer}
 	\url{https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html}
+
 	\bibitem[scikit-learn, TF-IDF Vectorizer]{sklearn:TfIdfVectorizer}
 	\url{https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html}
+
 	\bibitem[Text Normalization, Natural Language Processing]{NLP}
 	\url{https://towardsdatascience.com/text-normalization-for-natural-language-processing-nlp-70a314bfa646}
+
 	\bibitem[Yves Rychener, 2018]{Yves:2018dg}
 	Yves Rychener, Nicolas Zimmermann, Loïs Bilat
 	\newblock Detecting Bias in Amazon reviews
