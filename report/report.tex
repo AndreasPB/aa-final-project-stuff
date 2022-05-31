@@ -224,14 +224,11 @@ As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs we
 
 \section{Findings}
 
-\subsection{Subsection One}
+Looking at our table of model test runs\ref{model_test_runs}, no model was fully able to predict, with any certainty, which reviews were helpful. The Count document-term matrix using an MLP classifier with the LBFGS algorithm on a neural network of 1 layer of 50 nodes, with a training-set size of 876132, reached the best performance, with a Youden’s Index of 0.25646. Comparatively, other classifiers did worse, with LinearSVC doing only slightly worse than LBFGS on smaller training-sets, and the Adam Solver MLP classifier doing slightly worse on bigger training-sets.
 
-A statement requiring citation \cite{Figueredo:2009dg}.
-\blindtext % Dummy text
+When comparing the performance metrics of the models using different types of input data, Count or TF-IDF, Count did remarkably better. This could be interpreted as Count doing better when facing a classification problem, since some terms that would normally help distinguish between the two groups likely being suppressed by the IDF, removing valuable terms. Further examination is required to discover if this is the case, and if so, if another approach to parameterizing our dataset, like Bi-Normal Separation would perform better than Count.
 
-\subsection{Subsection Two}
-
-\blindtext % Dummy text
+Overall, our model was able to predict a helpful review in 1/3 of the cases, indicating that a more in-depth approach, possibly involving more features than the two currently provided, to training our model is required.
 
 %------------------------------------------------
 \section{Conclusion}
