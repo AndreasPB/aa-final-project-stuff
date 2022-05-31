@@ -232,6 +232,11 @@ Overall, our model was able to predict a helpful review in 1/3 of the cases, ind
 
 %------------------------------------------------
 \section{Conclusion}
+In this paper we have analyzed to what extent we can use classification models to predict the helpfulness of an Amazon review based on the review text and upvotes.
+
+Based on the analysis we find that the features used are not sufficient in determining the helpfulness of a review when using common classification tools. The inclusion of several other features contained in our dataset would likely improve upon the predictive power of our models.
+
+Solely classifying reviews based on term-frequency may not be enough to properly distinguish between helpful and unhelpful, as the review text can be nearly identical in both cases. This can be due to the fact that many reviews containing terms that would be labeled as helpful get lost in the large volume of unvoted reviews as seen in \figurename{\ref{fig:votes_distribution}}.
 
 
 %----------------------------------------------------------------------------------------
