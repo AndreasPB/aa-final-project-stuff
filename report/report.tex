@@ -23,6 +23,8 @@
 
 \usepackage{blindtext} % Package to generate dummy text throughout this template 
 
+\usepackage[numbers]{natbib}
+
 \usepackage[sc]{mathpazo} % Use the Palatino font
 \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
 \linespread{1.05} % Line spacing - Palatino needs more space between lines
@@ -53,7 +55,7 @@
 \pagestyle{fancy} % All pages have headers and footers
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
-\fancyhead[C]{Running title $\bullet$ May 2016 $\bullet$ Vol. XXI, No. 1} % Custom header text
+\fancyhead[C]{Detecting Helpfulness in Amazon Reviews - \today} % Custom header text
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
 
 \usepackage{titling} % Customizing the title section
@@ -61,6 +63,8 @@
 \usepackage{hyperref} % For hyperlinks in the PDF
 
 \usepackage{graphicx}
+
+\usepackage{float}
 
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
@@ -70,7 +74,7 @@
 
 \pretitle{\begin{center}\Huge\bfseries} % Article title formatting
 \posttitle{\end{center}} % Article title closing formatting
-\title{Article Title} % Article title
+\title{Detecting Helpfulness in Amazon Reviews} % Article title
 \author{%
 \textsc{Frederik Vincent Primdahl} \textsc{Mikael Steenberg Pasovski} \and \textsc{Andreas Peter Brodersen} \textsc{Andreas Wede Gustavsen} \\[1ex] % Your name
 \normalsize Copenhagen School of Design and Technology \\ % Your institution
@@ -100,7 +104,7 @@ In this paper data gathered from product reviews on the e-commerce site Amazon.c
 \section{Introduction}
 In the globalized economy of today, consumers are presented with a range of products to choose from when shopping. This can present some difficulty, as quality of the product is not always clear from its presentation. The customer review seeks to solve this by providing feedback on the purchase. Still, determining the value of a review can be difficult, as reviews can be misleading or provide little information.
 
-Voting systems are often set in place to identify helpful reviews, and help consumers circumvent this issue, yet these reviews still get lost in the sheer number of unlabeled reviews. Our machine learning model aims to further filter reviews mainly by analyzing use of words, verbosity, among other aspects, to discover what makes a review helpful.
+Voting systems are often set in place to identify helpful reviews, and help consumers circumvent this issue, yet these reviews still get lost in the sheer number of unlabeled reviews. Our machine learning model aims to further filter reviews and discover to what extent helpfulness can be predicted.
 
 %------------------------------------------------
 \section{Problem Formulation}
@@ -111,30 +115,13 @@ The main focus of this paper is to analyze Amazon review data across different c
 \section{Methods}
 Our research aims at creating a predictive model for identifying helpful Amazon reviews. Therefore, the data used in this study is a subset of Amazon product reviews divided into categories, with each product and reviewer having at least 5 reviews.
 
-As our model is primarily trained on text data, common Natural Language Processing techniques have been used in the preprocessing of data and the subsequent structuring of this data into input data.
+As our model is trained on text data, common Natural Language Processing techniques have been used in the preprocessing of data and the subsequent structuring of this data into input data.
 
 For converting our text data into parametric data for use in building our model, we have chosen to use document-term matrices through Count Vectorization and TF-IDF Vectorization. By employing two methods of text vectorization, we can more easily determine which term weighing factor improves the most upon the performance metrics of our model.
 
 Since we are dealing with a binary classification problem due to separation of reviews into two groups - helpful and unhelpful - we make use of several different classifiers in training our model. We are labelling each review on its helpfulness feature to make supervised learning through each of these classifiers possible.
 
 For our model evaluation we make use of primarily two statistics. A confusion matrix is used in summarizing the performance of the classifier algorithms used in training our model. As mentioned, we are dealing with a binary classification problem, and as in many problems of this nature, the two groups are not symmetric. Therefore we also apply Youden's Index to make up for our unbalanced dataset, using this statistic as a final measure of our model's predictive power.
-\subsection{Data exploration}
-
-With the cleaned up dataset and the research question in mind, columns with relevance are explored. To explore, we plot different columns of interest to identify any patterns in the data in connection to review helpfulness. We plot the distribution between reviews with votes and no votes.
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\textwidth]{img/no_votes_vs_votes.pdf}
-	\caption{Upvote distribution}
-	\label{fig:votes_distribution}
-\end{figure}
-As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very uneven in favor of reviews with no votes. This is relevant when evaluating performance metrics of our model, as it indicates that a statistic like Youden's Index might be useful to counteract random guessing. To get another perspective on review votes we plot the data into a heatmap in relation to ratings.
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\textwidth]{img/rating_vote_heatmap_excluding_no_votes.pdf}
-	\caption{Votes in relation to rating}
-	\label{fig:rating_vote_heatmap}
-\end{figure}
-\figurename{\ref{fig:rating_vote_heatmap}} shows the ratings binned with the amount of votes. This heatmap only shows reviews with votes. The heatmap gives an indication of how votes combined with ratings are distributed in our dataset in a more specific way with the binned votes compared to \figurename{\ref{fig:votes_distribution}}.
 
 %------------------------------------------------
 
@@ -182,27 +169,48 @@ As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very u
 \end{figure*}
 
 \section{Analysis}
+\subsection{Ethics and bias}
+As our model seeks to highlight helpful reviews, and distinguish - or filter - these from the unhelpful ones, ethics regarding censorship must be considered. Specific associations with words can often be attributed to bias, making NLP models whose purpose it is to filter undesired text prime censorship tools in the wrong hands\cite{censorship}. In the context of our model, a very real use-case would be as a tool for preventing unhelpful reviews from being submitted. However, unhelpfulness is subject to opinion, and controversial statements can quickly be tagged as bad and subsequently filtered out.
 
 \subsection{Data Preprocessing}
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\textwidth]{img/unclean_data.pdf}
-	\caption{Unclean data}
-	\label{fig:unclean_data}
+Our starting point of data preprocessing was to understand what an Amazon review consists of. The raw data can be seen in \figurename{\ref{fig:unclean_data}}.
+
+\begin{figure}[H]
+	\centering% Do not use center environment, it adds additional vertical space
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{img/unclean_data.pdf}
+		\caption{Unclean data}
+		\label{fig:unclean_data}
+	\end{center}
 \end{figure}
+Initial data preparation was carried out on the whole dataset, dropping review time, image, style, ASIN, and reviewer id features, as these were not needed. Unverified reviews were also filtered out, to avoid reviews from customers who did not purchase the product. Finally, null values were removed from the review text column.
 
-Our starting point of data prepossessing was to understand what an Amazon review consists of. The raw data can be seen in \figurename{\ref{fig:unclean_data}}.
-
-Initial data preparation was carried out on the whole dataset, dropping review time, image, style, ASIN, and reviewer id columns, as these were not needed. Unverified reviews were also filtered out, to avoid reviews from customers who did not purchase the product. Finally, null values were removed from the review text column.
-
-As our input data mainly consists of unstructured text reviews, text normalization was done on the review text column to reduce randomness and reach a more uniform structure. This was done in accordance with common NLP data cleaning guidelines. Steps in this process involved removing non-word elements from the text – punctuation, symbols -, along with transforming each remaining word into lowercase. Because our model concerns itself with classification rather than sentiment, stop words like “not” did not provide any additional information to our model and were subsequently removed, as with other stop words contained in the NLTK “stopwords” library.
+As our input data consists of unstructured text reviews, text normalization was done on the review text column to reduce randomness and reach a more uniform structure. This was done in accordance with common NLP data cleaning guidelines\cite{NLP}. Steps in this process involved removing non-word elements from the text – punctuation, symbols -, along with transforming each remaining word into lowercase. Because our model concerns itself with classification rather than sentiment, stop words like “not” did not provide any additional information to our model and were subsequently removed, as with other stop words contained in the NLTK “stopwords” library.
 
 Each review was then tokenized into separate words using whitespace as a delimiter, as part of lemmatization to reduce morphological variation. Shortening some words to their root was thought important to improve model training efficiency. Lemmatization was chosen over stemming, as the accuracy of a lemmatizer in properly shortening words was more important than the speed of a stemmer.
 
 As the next step of our data cleanup a column “voteSuccess” was added to the dataframe, calculating helpfulness of a review by dividing number of votes from the “votes”-column by quarters elapsed since the review was submitted. This was done to create a fairer indicator of helpfulness, since newer reviews would have had less time to accumulate helpfulness-votes and therefore appear less helpful.
 
-For training our model, a numeric representation of our text corpus was needed for providing our models with input data. This was the final part of data preprocessing. Document-term matrices were created from two different vectorizations – Count and TF-IDF. Count vectorization parses a text corpus into a matrix based on the frequency of each term occurring in that corpus. This method was therefore the easiest way for us to present our data as something our classifiers could use. To discover if any less informative words not removed as part of our data cleanup were negatively impacting the performance of our model, we also opted for TF-IDF vectorization of our text data. TF-IDF favors unique terms appearing in documents higher, likely leading to a difference in model accuracy and precision metrics, and F1 scores.
+For training our model, a numeric representation of our text corpus was needed for providing our models with input data. This was the final part of data preprocessing. Document-term matrices were created from two different vectorizations – Count\cite{sklearn:CountVectorizer} and TF-IDF\cite{sklearn:TfIdfVectorizer}. Count vectorization parses a text corpus into a matrix based on the frequency of each term occurring in that corpus. This method was therefore the easiest way for us to present our data as something our classifiers could use. To discover if any less informative words not removed as part of our data cleanup were negatively impacting the performance of our model, we also opted for TF-IDF vectorization of our text data. TF-IDF favors unique terms appearing in documents higher, likely leading to a difference in model accuracy and precision metrics, and F1 scores.
+
+\subsection{Data Exploration}
+
+With the cleaned up dataset and the research question in mind, columns with relevance are explored. To explore, we plot different columns of interest to identify any patterns in the data in connection to review helpfulness. We plot the distribution between reviews with votes and no votes.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/no_votes_vs_votes.pdf}
+	\caption{Upvote distribution}
+	\label{fig:votes_distribution}
+\end{figure}
+As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very uneven in favor of reviews with no votes. This is relevant when evaluating performance metrics of our model, as it indicates that a statistic like Youden's Index might be useful to counteract random guessing. To get another perspective on review votes we plot the data into a heatmap in relation to ratings.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/rating_vote_heatmap_excluding_no_votes.pdf}
+	\caption{Votes in relation to rating}
+	\label{fig:rating_vote_heatmap}
+\end{figure}
+\figurename{\ref{fig:rating_vote_heatmap}} shows the ratings binned with the amount of votes. This heatmap only shows reviews with votes. The heatmap gives an indication of how votes combined with ratings are distributed in our dataset in a more specific way with the binned votes compared to \figurename{\ref{fig:votes_distribution}}.
 
 \subsection{Model Building}
 To begin our model building LinearSVC was chosen as the initial classifier for our dataset. LinearSVC tries to classify our data into two groups, helpful and unhelpful since our problem is of a binary nature, and tries to find the optimal split between these two\cite{sklearn:LinearSVC}. Initially the model did not converge in time. We therefore tried different max iterations to see when the model would converge and avoid overfitting and find the best fit for classifying a review as helpful/unhelpful. Performance does take a hit as the data size increases, see \figurename{\ref{model_test_runs}}.
@@ -220,7 +228,7 @@ Logistic Regression is the last classifier we built upon\cite{sklearn:LogisticRe
 \subsection{Model Evaluation}
 To get a reliable estimate of how well the models are doing, we run all the predictions through our summary report-function, which consists of metrics such as accuracy, recall and f1-score, and a confusion matrix.
 
-As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs well at predicting the unhelpful reviews, but fail to predict the helpful reviews at a decent rate. This is the case for every model. Youden's Index makes up for this by taking chance into account and applying the same weight to both groups, measuring how well helpfulness was predicted in a review. Our Youden's Index scores have all been low since the models haven't been able to predict the helpful reviews at a rate higher than a third, which while being better than true randomness still is very low.
+As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs well at predicting the unhelpful reviews, but fails to predict the helpful reviews at a decent rate. This is the case for every model. Youden's Index makes up for this by taking chance into account and applying the same weight to both groups, measuring how well helpfulness was predicted in a review. Our Youden's Index scores have all been low since the models haven't been able to predict the helpful reviews at a rate higher than a third, which while being better than true randomness still is very low.
 
 \begin{figure}[h]
 	\centering
@@ -229,18 +237,14 @@ As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs we
 	\label{fig:confusion_matrix}
 \end{figure}
 
-As the final step of our data cleanup a column “voteSuccess” was added to the dataframe, calculating helpfulness of a review by dividing number of votes from the “votes”-column by quarters elapsed since the review was submitted. This was done to create a fairer indicator of helpfulness, since newer reviews would have had less time to accumulate helpfulness-votes and therefore appear less helpful.
 
-\subsection{Ethics and bias}
-As our model seeks to highlight helpful reviews, and distinguish - or filter - these from the unhelpful ones, ethics regarding censorship must be considered. Specific associations with words can often be attributed to bias, making NLP models whose purpose it is to filter undesired text prime censorship tools in the wrong hands. In the context of our model, a very real use-case would be as a tool for preventing unhelpful reviews from being submitted. However, unhelpfulness is subject to opinion, and controversial statements can quickly be tagged as bad and subsequently filtered out.
-\cite{Yves:2018dg}.
 %------------------------------------------------
 
 \section{Findings}
 
-Looking at our table of model test runs\ref{model_test_runs}, no model was fully able to predict, with any certainty, which reviews were helpful. The Count document-term matrix using an MLP classifier with the LBFGS algorithm on a neural network of 1 layer of 50 nodes, with a training-set size of 876132, reached the best performance, with a Youden’s Index of 0.25646. Comparatively, other classifiers did worse, with LinearSVC doing only slightly worse than LBFGS on smaller training-sets, and the Adam Solver MLP classifier doing slightly worse on bigger training-sets.
+Looking at our table of model test runs\ref{model_test_runs}, no model was fully able to predict, with any certainty, which reviews were helpful. The Count document-term matrix using an MLP classifier with the LBFGS algorithm on a neural network of 1 layer of 50 nodes, with a training-set size of 876132, reached the best performance, with a Youden’s Index of 0.25646. Comparatively, other classifiers did worse, with LinearSVC doing only slightly worse than LBFGS on smaller training-sets.
 
-When comparing the performance metrics of the models using different types of input data, Count or TF-IDF, Count did remarkably better. This could be interpreted as Count doing better when facing a classification problem, since some terms that would normally help distinguish between the two groups likely being suppressed by the IDF, removing valuable terms. Further examination is required to discover if this is the case, and if so, if another approach to parameterizing our dataset, like Bi-Normal Separation would perform better than Count.
+When comparing the performance metrics of the models using different types of input data, Count or TF-IDF, Count did remarkably better. This could be interpreted as Count doing better when facing a classification problem, since some terms that would normally help distinguish between the two groups likely being suppressed by the IDF, removing valuable terms. Further examination is required to discover if this is the case, and if so, if another approach to parameterizing our dataset, like Bi-Normal Separation\cite{bi-normalSeparation} would perform better than Count.
 
 Overall, our model was able to predict a helpful review in 1/3 of the cases, indicating that a more in-depth approach, possibly involving more features than the two currently provided, to training our model is required.
 
@@ -256,24 +260,27 @@ Solely classifying reviews based on term-frequency may not be enough to properly
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
-
+\setcitestyle{numbers} % set the citation style to ``numbers''.
 \begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
 
-	\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-	Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-	\newblock Assortative pairing and life history strategy - a cross-cultural
-	study.
-
-	\bibitem[scikit-learn LinearSVC]{sklearn:LinearSVC}
+	\bibitem[scikit-learn, LinearSVC]{sklearn:LinearSVC}
 	\url{https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html}
 
-	\bibitem[scikit-learn MLPClassifier]{sklearn:MLPClassifier}
-	\url{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html} \newblock {\em Human Nature}, 20:317--330.
+	\bibitem[scikit-learn, MLPClassifier]{sklearn:MLPClassifier}
+	\url{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html}
 
-	\bibitem[scikit-learn LogisticRegression]{sklearn:LogisticRegression}
+	\bibitem[scikit-learn, LogisticRegression]{sklearn:LogisticRegression}
 	\url{https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html}
-
-
+	\bibitem[Jean-Thomas Baillargeon, Luc Lamontagne, and Étienne Marceau.] {bi-normalSeparation}
+	\newblock Weighting Words Using Bi-Normal Separation for Text Classification Tasks with Multiple Classes. ResearchGate, 2019
+	\bibitem [Dirk Hovy, Shannon L. Spruit]{censorship}
+	\newblock The Social Impact of Natural Language Processing. Dirkhovy.com, 2018.
+	\bibitem[scikit-learn, Count Vectorizer]{sklearn:CountVectorizer}
+	\url{https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html}
+	\bibitem[scikit-learn, TF-IDF Vectorizer]{sklearn:TfIdfVectorizer}
+	\url{https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html}
+	\bibitem[Text Normalization, Natural Language Processing]{NLP}
+	\url{https://towardsdatascience.com/text-normalization-for-natural-language-processing-nlp-70a314bfa646}
 	\bibitem[Yves Rychener, 2018]{Yves:2018dg}
 	Yves Rychener, Nicolas Zimmermann, Loïs Bilat
 	\newblock Detecting Bias in Amazon reviews
