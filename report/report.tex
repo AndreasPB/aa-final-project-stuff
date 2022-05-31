@@ -229,6 +229,11 @@ As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs we
 	\label{fig:confusion_matrix}
 \end{figure}
 
+As the final step of our data cleanup a column “voteSuccess” was added to the dataframe, calculating helpfulness of a review by dividing number of votes from the “votes”-column by quarters elapsed since the review was submitted. This was done to create a fairer indicator of helpfulness, since newer reviews would have had less time to accumulate helpfulness-votes and therefore appear less helpful.
+
+\subsection{Ethics and bias}
+As our model seeks to highlight helpful reviews, and distinguish - or filter - these from the unhelpful ones, ethics regarding censorship must be considered. Specific associations with words can often be attributed to bias, making NLP models whose purpose it is to filter undesired text prime censorship tools in the wrong hands. In the context of our model, a very real use-case would be as a tool for preventing unhelpful reviews from being submitted. However, unhelpfulness is subject to opinion, and controversial statements can quickly be tagged as bad and subsequently filtered out.
+\cite{Yves:2018dg}.
 %------------------------------------------------
 
 \section{Findings}
@@ -262,6 +267,11 @@ Solely classifying reviews based on term-frequency may not be enough to properly
 	\bibitem[scikit-learn MLPClassifier]{sklearn:MLPClassifier}
 	\url{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html} \newblock {\em Human Nature}, 20:317--330.
 
+
+	\bibitem[Yves Rychener, 2018]{Yves:2018dg}
+	Yves Rychener, Nicolas Zimmermann, Loïs Bilat
+	\newblock Detecting Bias in Amazon reviews
+	\url{https://ada-lyn.github.io/}
 \end{thebibliography}
 
 %----------------------------------------------------------------------------------------
