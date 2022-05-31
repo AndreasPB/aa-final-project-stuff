@@ -136,7 +136,6 @@ As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very u
 \end{figure}
 \figurename{\ref{fig:rating_vote_heatmap}} shows the ratings binned with the amount of votes. This heatmap only shows reviews with votes. The heatmap gives an indication of how votes combined with ratings are distributed in our dataset in a more specific way with the binned votes compared to \figurename{\ref{fig:votes_distribution}}.
 
-
 %------------------------------------------------
 
 \begin{figure*}[t]
@@ -185,6 +184,16 @@ As seen in \figurename{\ref{fig:votes_distribution}}, the distribution is very u
 \section{Analysis}
 
 \subsection{Data Preprocessing}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/unclean_data.pdf}
+	\caption{Unclean data}
+	\label{fig:unclean_data}
+\end{figure}
+
+Our starting point of data prepossessing was to understand what an Amazon review actually was. We had the following data\ref{fig:unclean_data} to begin with.
+
 Initial data preparation was carried out on the whole dataset, dropping review time, image, style, ASIN, and reviewer id columns, as these were not needed. Unverified reviews were also filtered out, to avoid reviews from customers who did not purchase the product. Finally, null values were removed from the review text column.
 
 As our input data mainly consists of unstructured text reviews, text normalization was done on the review text column to reduce randomness and reach a more uniform structure. This was done in accordance with common NLP data cleaning guidelines. Steps in this process involved removing non-word elements from the text – punctuation, symbols -, along with transforming each remaining word into lowercase. Because our model concerns itself with classification rather than sentiment, stop words like “not” did not provide any additional information to our model and were subsequently removed, as with other stop words contained in the NLTK “stopwords” library.
