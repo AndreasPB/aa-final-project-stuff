@@ -55,7 +55,7 @@
 \pagestyle{fancy} % All pages have headers and footers
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
-\fancyhead[C]{Running title $\bullet$ May 2016 $\bullet$ Vol. XXI, No. 1} % Custom header text
+\fancyhead[C]{Detecting Helpfulness in Amazon Reviews - \today} % Custom header text
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
 
 \usepackage{titling} % Customizing the title section
@@ -228,7 +228,7 @@ Logistic Regression is the last classifier we built upon\cite{sklearn:LogisticRe
 \subsection{Model Evaluation}
 To get a reliable estimate of how well the models are doing, we run all the predictions through our summary report-function, which consists of metrics such as accuracy, recall and f1-score, and a confusion matrix.
 
-As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs well at predicting the unhelpful reviews, but fail to predict the helpful reviews at a decent rate. This is the case for every model. Youden's Index makes up for this by taking chance into account and applying the same weight to both groups, measuring how well helpfulness was predicted in a review. Our Youden's Index scores have all been low since the models haven't been able to predict the helpful reviews at a rate higher than a third, which while being better than true randomness still is very low.
+As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs well at predicting the unhelpful reviews, but fails to predict the helpful reviews at a decent rate. This is the case for every model. Youden's Index makes up for this by taking chance into account and applying the same weight to both groups, measuring how well helpfulness was predicted in a review. Our Youden's Index scores have all been low since the models haven't been able to predict the helpful reviews at a rate higher than a third, which while being better than true randomness still is very low.
 
 \begin{figure}[h]
 	\centering
@@ -237,15 +237,14 @@ As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs we
 	\label{fig:confusion_matrix}
 \end{figure}
 
-As the final step of our data cleanup a column “voteSuccess” was added to the dataframe, calculating helpfulness of a review by dividing number of votes from the “votes”-column by quarters elapsed since the review was submitted. This was done to create a fairer indicator of helpfulness, since newer reviews would have had less time to accumulate helpfulness-votes and therefore appear less helpful.
 
 %------------------------------------------------
 
 \section{Findings}
 
-Looking at our table of model test runs\ref{model_test_runs}, no model was fully able to predict, with any certainty, which reviews were helpful. The Count document-term matrix using an MLP classifier with the LBFGS algorithm on a neural network of 1 layer of 50 nodes, with a training-set size of 876132, reached the best performance, with a Youden’s Index of 0.25646. Comparatively, other classifiers did worse, with LinearSVC doing only slightly worse than LBFGS on smaller training-sets, and the Adam Solver MLP classifier doing slightly worse on bigger training-sets.
+Looking at our table of model test runs\ref{model_test_runs}, no model was fully able to predict, with any certainty, which reviews were helpful. The Count document-term matrix using an MLP classifier with the LBFGS algorithm on a neural network of 1 layer of 50 nodes, with a training-set size of 876132, reached the best performance, with a Youden’s Index of 0.25646. Comparatively, other classifiers did worse, with LinearSVC doing only slightly worse than LBFGS on smaller training-sets.
 
-When comparing the performance metrics of the models using different types of input data, Count or TF-IDF, Count did remarkably better. This could be interpreted as Count doing better when facing a classification problem, since some terms that would normally help distinguish between the two groups likely being suppressed by the IDF, removing valuable terms. Further examination is required to discover if this is the case, and if so, if another approach to parameterizing our dataset, like Bi-Normal Separation would perform better than Count.
+When comparing the performance metrics of the models using different types of input data, Count or TF-IDF, Count did remarkably better. This could be interpreted as Count doing better when facing a classification problem, since some terms that would normally help distinguish between the two groups likely being suppressed by the IDF, removing valuable terms. Further examination is required to discover if this is the case, and if so, if another approach to parameterizing our dataset, like Bi-Normal Separation\cite{bi-normalSeparation} would perform better than Count.
 
 Overall, our model was able to predict a helpful review in 1/3 of the cases, indicating that a more in-depth approach, possibly involving more features than the two currently provided, to training our model is required.
 
