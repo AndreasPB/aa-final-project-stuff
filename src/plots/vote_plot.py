@@ -15,7 +15,7 @@ plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
 if EXPORT_PLOTS:
-    plt.savefig("../../report/img/votes_binned_including_0.svg", bbox_inches="tight")
+    plt.savefig("../../report/img/votes_binned_including_0.pdf", bbox_inches="tight")
 
 # %%
 bins = list(range(1, 75, 10))
@@ -24,7 +24,7 @@ plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
 if EXPORT_PLOTS:
-    plt.savefig("../../report/img/votes_binned_excluding_0.svg", bbox_inches="tight")
+    plt.savefig("../../report/img/votes_binned_excluding_0.pdf", bbox_inches="tight")
 
 # %%
 votes = df["vote"].value_counts()
@@ -35,7 +35,7 @@ plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
 plt.legend(["Review votes"])
 if EXPORT_PLOTS:
-    plt.savefig("../../report/img/no_votes_vs_votes.svg", bbox_inches="tight")
+    plt.savefig("../../report/img/no_votes_vs_votes.pdf", bbox_inches="tight")
 
 # %%
 bins = list(range(1, 75, 10))  # [1, 11, 21, 31, 41, 51, 61, 71]
@@ -80,4 +80,4 @@ for i in range(5):
         text = ax.text(j, i, heatmap[i, j], ha="center", va="center")
 
 if EXPORT_PLOTS:
-    plt.savefig("../../report/img/rating_vote_heatmap_excluding_no_votes.svg")
+    plt.savefig("../../report/img/rating_vote_heatmap_excluding_no_votes.pdf")

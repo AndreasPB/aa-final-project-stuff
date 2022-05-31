@@ -13,4 +13,4 @@ ax.set_ylabel("Amount")
 ax.set_xlabel("Rating")
 ax.legend(["Rating"])
 if EXPORT_PLOTS:
-    plt.savefig("../../report/img/rating_distribution.svg", bbox_inches="tight")
+    plt.savefig("../../report/img/rating_distribution.pdf", bbox_inches="tight")
