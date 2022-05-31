@@ -187,6 +187,8 @@ As the next step of our data cleanup a column “voteSuccess” was added to the
 For training our model, a numeric representation of our text corpus was needed for providing our models with input data. This was the final part of data preprocessing. Document-term matrices were created from two different vectorizations – Count and TF-IDF. Count vectorization parses a text corpus into a matrix based on the frequency of each term occurring in that corpus. This method was therefore the easiest way for us to present our data as something our classifiers could use. To discover if any less informative words not removed as part of our data cleanup were negatively impacting the performance of our model, we also opted for TF-IDF vectorization of our text data. TF-IDF favors unique terms appearing in documents higher, likely leading to a difference in model accuracy and precision metrics, and F1 scores.
 
 \subsection{Model building}
+To begin our model building LinearSVC was chosen as the initial classifier for our dataset. Initially the model did not converge in time. We therefore tried different max iterations to see when the model would converge and avoid overfitting and find the best fit for classifying a review as helpful/unhelpful. Performance does take a hit as the data size increases, see \figurename{\ref{Si_Results}}.
+
 After trying SVM as our first classifier, we wanted to try a neural network on the dataset. Both SVM and neural network seemed like a great place to start, since they can be used in most machine learning tasks and yield decent results.
 
 We've used the Multi-layer Perceptron classifier with different amounts of hidden layers, nodes and solvers.
