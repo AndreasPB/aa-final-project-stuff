@@ -13,7 +13,7 @@ bins = list(range(0, 75, 10))
 df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
-plt.legend(["Review votes"])
+plt.legend(["Reviews"])
 if EXPORT_PLOTS:
     plt.savefig("../../report/img/votes_binned_including_0.pdf", bbox_inches="tight")
 
@@ -22,7 +22,7 @@ bins = list(range(1, 75, 10))
 df["vote"].value_counts(bins=bins).plot(figsize=(9, 3), kind="bar", rot=0)
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
-plt.legend(["Review votes"])
+plt.legend(["Reviews"])
 if EXPORT_PLOTS:
     plt.savefig("../../report/img/votes_binned_excluding_0.pdf", bbox_inches="tight")
 
@@ -33,7 +33,7 @@ has_votes = votes[1:].sum()
 plt.bar(["No votes", "Votes"], [no_votes, has_votes])
 plt.ylabel("Amount of reviews")
 plt.xlabel("Vote")
-plt.legend(["Review votes"])
+plt.legend(["Reviews"])
 if EXPORT_PLOTS:
     plt.savefig("../../report/img/no_votes_vs_votes.pdf", bbox_inches="tight")
 
@@ -75,9 +75,19 @@ ax.set_xlabel("Votes")
 ax.set_xticklabels(bin_labels)
 ax.set_yticklabels(rating_labels)
 
+textcolors = ("black", "white")
+threshold = (heatmap.max()) / 2
+
 for i in range(5):
     for j in range(len(bins) - 1):
-        text = ax.text(j, i, heatmap[i, j], ha="center", va="center")
+        text = ax.text(
+            j,
+            i,
+            heatmap[i, j],
+            ha="center",
+            va="center",
+            color=textcolors[int(heatmap[i, j] < threshold)],
+        )
 
 if EXPORT_PLOTS:
     plt.savefig("../../report/img/rating_vote_heatmap_excluding_no_votes.pdf")
