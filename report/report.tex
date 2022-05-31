@@ -208,11 +208,17 @@ Playing around with the nodes and layers got us to the ideal spot of 1 layer of 
 Logistic Regression is the last classifier we built upon. Just as with the SVM max iterations need to be tweaked. As seen in \figurename{\ref{Si_Results}}, Logistic Regression fits a lot faster, but with a slightly lower Youden’s Index score with the CountVectorizer.
 
 \subsection{Model Evaluation}
-To get a reliable estimate of how well the models are doing, we run all the predictions through our summary_report-function, which consists of metrics such as accuracy, recall and f1-score, and a confusion matrix.
+To get a reliable estimate of how well the models are doing, we run all the predictions through our summary report-function, which consists of metrics such as accuracy, recall and f1-score, and a confusion matrix.
 
-As seen in the confusion matrix(REFERER TIL CONFUSION MATRIX!!), the model performs well at predicting the unhelpful reviews, but fail to predict the helpful reviews at a decent rate. This is the case for every model. Youden's Index makes up for this by taking chance into account and applying the same weight to both groups, measuring how well helpfulness was predicted in a review. Our Youden's Index scores have all been low since the models haven't been able to predict the helpful reviews at a rate higher than a third, which while being better than true randomness still is very low.
+As seen in the confusion matrix\ref{fig:confusion_matrix}, the model performs well at predicting the unhelpful reviews, but fail to predict the helpful reviews at a decent rate. This is the case for every model. Youden's Index makes up for this by taking chance into account and applying the same weight to both groups, measuring how well helpfulness was predicted in a review. Our Youden's Index scores have all been low since the models haven't been able to predict the helpful reviews at a rate higher than a third, which while being better than true randomness still is very low.
 
-INDSÆT CONFUSION MATRIX!!!
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/tm_mlp_lbgfs_confusion_matrix.pdf}
+	\caption{Confusion Matrix}
+	\label{fig:confusion_matrix}
+\end{figure}
+
 %------------------------------------------------
 
 \section{Findings}
